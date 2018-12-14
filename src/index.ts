@@ -1,14 +1,3 @@
-// tslint:disable max-classes-per-file no-console
-
-interface IPhotoCapabilities {
-  fillLightMode: Array<"auto" | "off" | "flash">;
-}
-
-declare class ImageCapture {
-  constructor(track: MediaStreamTrack);
-  public getPhotoCapabilities(): Promise<IPhotoCapabilities>;
-}
-
 export class Torch {
   private mediaStreamTrack?: MediaStreamTrack;
   private enabled = false;
@@ -27,7 +16,6 @@ export class Torch {
         facingMode: "environment"
       }
     });
-    stream.onactive = () => console.log("active");
 
     const tracks = stream.getVideoTracks();
     if (tracks.length === 0) {
@@ -43,13 +31,16 @@ export class Torch {
       return;
     }
     const constraint = { torch: enableFlash } as MediaTrackConstraintSet;
+
+    // Silently fail if we have to, but log to console.
+    // tslint:disable no-console
     try {
       await this.mediaStreamTrack.applyConstraints({
         advanced: [constraint]
       });
       this.enabled = enableFlash;
     } catch (err) {
-      console.error(err);
+      console.error("Ignoring error:", err);
     }
   }
 

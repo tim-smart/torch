@@ -1,6 +1,6 @@
 {
   "name": "@tim-smart/torch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Library to turn on/off the camera flash on phones",
   "main": "index.js",
   "scripts": {
